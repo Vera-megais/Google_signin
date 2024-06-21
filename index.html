@@ -33,6 +33,7 @@
   <script>
     $(window).on('load', function () {
 
+      GoogleAuth();
       async function GoogleAuth() {
         let a = await function () {
           google.accounts.id.initialize({
