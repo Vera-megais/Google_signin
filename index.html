@@ -45,7 +45,6 @@
         localStorage.removeItem("google_signin");
       })
 
-
       function GoogleAuth() {
         google.accounts.id.initialize({
           client_id: "779621631599-sg5kd0mne4c848mdbgkb6hr93f1q8efk.apps.googleusercontent.com", // 用戶端編號
@@ -69,15 +68,9 @@
         }
       }
 
-      const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
-      if (isSignedIn) {
-        // 用户已经登录
-        const user = gapi.auth2.getAuthInstance().currentUser.get();
-        console.log(user);
-      } else {
-        // 用户未登录
-        console.log('User is not signed in.');
-      }
+      google.accounts.id.watch({
+        callback: handleCallback,
+      });
 
       function addUser(img, name) {
         $("img").css({
