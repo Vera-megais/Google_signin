@@ -52,7 +52,6 @@
           use_fedcm_for_prompt: true
         });
         setTimeout(() => { google.accounts.id.prompt() }, 100);
-        setTimeout(() => { checkLoginStatus() }, 100);
       }
 
       function handleCallback(res) {
@@ -69,17 +68,9 @@
         }
       }
 
-      function checkLoginStatus() {
-        const res = google.accounts.id.store.getState();
-        if (res) {
-          let credential = res.credential;
-          let userinfo = parseJwt(credential);
-          addUser(userinfo.picture, userinfo.name);
-          localStorage.setItem("google_signin", "true");
-        } else {
-          console.log("登出");
-        }
-      }
+      document.addEventListener('DOMContentLoaded', function () {
+        GoogleAuth();
+      });
 
       function addUser(img, name) {
         $("img").css({
