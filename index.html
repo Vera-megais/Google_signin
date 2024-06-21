@@ -35,8 +35,8 @@
 
       google.accounts.id.initialize({
         client_id: "779621631599-sg5kd0mne4c848mdbgkb6hr93f1q8efk.apps.googleusercontent.com", // 用戶端編號
-        callback: handleCallback,
-        auto_select: true
+        callback: handleCallback, // 函式，只要有成功呼叫到這個function表示登入成功
+        use_fedcm_for_prompt: true
       });
       setTimeout(() => { google.accounts.id.prompt() }, 100);
 
