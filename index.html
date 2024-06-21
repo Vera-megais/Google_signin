@@ -38,6 +38,7 @@
         callback: handleCallback,
         auto_select: true
       });
+      setTimeout(() => { google.accounts.id.prompt() }, 100);
 
       function handleCallback(res) {
         if (res) {
