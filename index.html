@@ -41,7 +41,7 @@
       $(".google_signout").click(function () {
         google.accounts.id.disableAutoSelect();
         localStorage.removeItem("google_signin");
-        localStorage.removeItem("googlelst");
+        localStorage.removeItem("cachedValue");
         signout();
       })
 
@@ -61,11 +61,11 @@
         let credential = res.credential;
         let userinfo = parseJwt(credential); // 進行解碼，取得使用者資料(確保安全性，應該在後端進行驗證)
         localStorage.setItem("google_signin", "true");
-        localStorage.setItem("googlelst", credential);
+        localStorage.setItem("cachedValue", JSON.stringify({ "name": userinfo.name, "img": userinfo.picture }));
         signin();
       } else {
         localStorage.removeItem("google_signin");
-        localStorage.removeItem("googlelst");
+        localStorage.removeItem("cachedValue");
       }
     }
 
@@ -80,11 +80,11 @@
     };
 
     function signin() {
-      let useinfo = parseJwt(localStorage.getItem("googlelst"));
+      let useinfo = JSON.parse(localStorage.getItem("cachedValue"));
       document.querySelector(".google_signin").style.display = "none";
       document.querySelector(".google_signout").style.display = "inline-block";
       document.querySelector(".name").innerHTML = useinfo.name;
-      document.querySelector(".img").src = useinfo.picture;
+      document.querySelector(".img").src = useinfo.img;
     }
 
     function signout() {
