@@ -21,6 +21,13 @@
 
   <script>
 
+    $(window).on('load', function () {
+      let login = sessionStorage.getItem("google_signin");;
+      if (login) {
+        signin();
+      }
+    })
+
     $(function () {
 
       // 登入按鈕
@@ -73,7 +80,7 @@
     };
 
     function signin() {
-      let useinfo = JSON.parse(sessionStorage.getItem("cachedValue"))
+      let useinfo = JSON.parse(sessionStorage.getItem("cachedValue"));
       document.querySelector(".google_signin").style.display = "none";
       document.querySelector(".google_signout").style.display = "inline-block";
       document.querySelector(".name").innerHTML = useinfo.name;
