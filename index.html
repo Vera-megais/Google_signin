@@ -52,13 +52,14 @@
     })
 
     function GoogleAuth() {
-      google.accounts.id.initialize({
-        client_id: "256207949615-k0nj6ir77lg31p4v1sqrrduhacnbt2h0.apps.googleusercontent.com", // 用戶端編號
-        callback: handleCallback, // 只要有成功呼叫到這個function表示登入成功
-        use_fedcm_for_prompt: true,
-        auto_select: true,
-        autoReauthn: true,
-      });
+      setTimeout(() => {
+        google.accounts.id.initialize({
+          client_id: "256207949615-k0nj6ir77lg31p4v1sqrrduhacnbt2h0.apps.googleusercontent.com", // 用戶端編號
+          callback: handleCallback, // 只要有成功呼叫到這個function表示登入成功
+          use_fedcm_for_prompt: true,
+          auto_select: true,
+        });
+      }, 100)
       setTimeout(() => { google.accounts.id.prompt() }, 100);
     }
 
