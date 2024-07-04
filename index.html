@@ -23,13 +23,9 @@
 
     $(window).on('load', function () {
 
-      let login = sessionStorage.getItem("google_signin");;
+      let login = localStorage.getItem("google_signin");;
       if (login) {
-        // signin();
-        $.getScript("https://accounts.google.com/gsi/client", function () {
-          // 進行登入程序
-          GoogleAuth();
-        });
+        signin();
       }
 
     })
@@ -44,22 +40,19 @@
       // 登出按鈕
       $(".google_signout").click(function () {
         google.accounts.id.disableAutoSelect();
-        sessionStorage.removeItem("google_signin");
-        sessionStorage.removeItem("cachedValue");
+        localStorage.removeItem("google_signin");
+        localStorage.removeItem("cachedValue");
         signout();
       })
 
     })
 
     function GoogleAuth() {
-      setTimeout(() => {
-        google.accounts.id.initialize({
-          client_id: "256207949615-k0nj6ir77lg31p4v1sqrrduhacnbt2h0.apps.googleusercontent.com", // 用戶端編號
-          callback: handleCallback, // 只要有成功呼叫到這個function表示登入成功
-          use_fedcm_for_prompt: true,
-          auto_select: true,
-        });
-      }, 100)
+      google.accounts.id.initialize({
+        client_id: "256207949615-k0nj6ir77lg31p4v1sqrrduhacnbt2h0.apps.googleusercontent.com", // 用戶端編號
+        callback: handleCallback, // 只要有成功呼叫到這個function表示登入成功
+        use_fedcm_for_prompt: true,
+      });
       setTimeout(() => { google.accounts.id.prompt() }, 100);
     }
 
@@ -67,12 +60,12 @@
       if (res) {
         let credential = res.credential;
         let userinfo = parseJwt(credential); // 進行解碼，取得使用者資料(確保安全性，應該在後端進行驗證)
-        sessionStorage.setItem("google_signin", "true");
-        sessionStorage.setItem("cachedValue", JSON.stringify({ "name": userinfo.name, "img": userinfo.picture }));
+        localStorage.setItem("google_signin", "true");
+        localStorage.setItem("cachedValue", JSON.stringify({ "name": userinfo.name, "img": userinfo.picture }));
         signin();
       } else {
-        sessionStorage.removeItem("google_signin");
-        sessionStorage.removeItem("cachedValue");
+        localStorage.removeItem("google_signin");
+        localStorage.removeItem("cachedValue");
       }
     }
 
@@ -87,7 +80,7 @@
     };
 
     function signin() {
-      let useinfo = JSON.parse(sessionStorage.getItem("cachedValue"));
+      let useinfo = JSON.parse(localStorage.getItem("cachedValue"));
       document.querySelector(".google_signin").style.display = "none";
       document.querySelector(".google_signout").style.display = "inline-block";
       document.querySelector(".name").innerHTML = useinfo.name;
