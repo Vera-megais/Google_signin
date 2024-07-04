@@ -22,10 +22,14 @@
   <script>
 
     $(window).on('load', function () {
+
       let login = sessionStorage.getItem("google_signin");;
       if (login) {
         signin();
+      } else {
+        signout();
       }
+
     })
 
     $(function () {
@@ -61,8 +65,6 @@
         sessionStorage.setItem("google_signin", "true");
         sessionStorage.setItem("cachedValue", JSON.stringify({ "name": userinfo.name, "img": userinfo.picture }));
         signin();
-        console.log(res);
-        console.log(userinfo);
       } else {
         sessionStorage.removeItem("google_signin");
         sessionStorage.removeItem("cachedValue");
