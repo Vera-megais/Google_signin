@@ -57,6 +57,7 @@
         callback: handleCallback, // 只要有成功呼叫到這個function表示登入成功
         use_fedcm_for_prompt: true,
         auto_select: true,
+        autoReauthn: true,
       });
       setTimeout(() => { google.accounts.id.prompt() }, 100);
     }
