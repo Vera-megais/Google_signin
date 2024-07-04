@@ -63,6 +63,7 @@
         localStorage.setItem("google_signin", "true");
         localStorage.setItem("cachedValue", JSON.stringify({ "name": userinfo.name, "img": userinfo.picture }));
         signin();
+        console.log(res);
       } else {
         localStorage.removeItem("google_signin");
         localStorage.removeItem("cachedValue");
