@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google_signin</title>
+
+  <!-- js -->
+  <script src="./js/jquery-3.6.1.min.js"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+</head>
+
+<body>
+
+  <button class="google_signin">登入Google</button>
+  <button class="google_signout" style="display: none;">登出Google</button>
+  <p class="name"></p>
+  <img src="" alt="" class="img" style="max-width: 50px; max-height: 50px;">
+
+  <script>
+
+    $(function () {
+
+      // 登入按鈕
+      $(".google_signin").click(function () {
+        GoogleAuth();
+      })
+
+      // 登出按鈕
+      $(".google_signout").click(function () {
+        google.accounts.id.disableAutoSelect();
+        sessionStorage.removeItem("google_signin");
+        sessionStorage.removeItem("cachedValue");
+        signout();
+      })
+
+    })
+
+    function GoogleAuth() {
+      google.accounts.id.initialize({
+        client_id: "256207949615-k0nj6ir77lg31p4v1sqrrduhacnbt2h0.apps.googleusercontent.com", // 用戶端編號
+        callback: handleCallback, // 只要有成功呼叫到這個function表示登入成功
+        use_fedcm_for_prompt: true
+      });
+      setTimeout(() => { google.accounts.id.prompt() }, 100);
+    }
+
+    function handleCallback(res) {
+      if (res) {
+        let credential = res.credential;
+        let userinfo = parseJwt(credential); // 進行解碼，取得使用者資料(確保安全性，應該在後端進行驗證)
+        sessionStorage.setItem("google_signin", "true");
+        sessionStorage.setItem("cachedValue", JSON.stringify({ "name": userinfo.name, "img": userinfo.picture }));
+        signin();
+        console.log(res);
+        console.log(userinfo);
+      } else {
+        sessionStorage.removeItem("google_signin");
+        sessionStorage.removeItem("cachedValue");
+      }
+    }
+
+    function parseJwt(token) {
+      var base64Url = token.split('.')[1];
+      var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+
+      return JSON.parse(jsonPayload);
+    };
+
+    function signin() {
+      let useinfo = JSON.parse(sessionStorage.getItem("cachedValue"))
+      document.querySelector(".google_signin").style.display = "none";
+      document.querySelector(".google_signout").style.display = "inline-block";
+      document.querySelector(".name").innerHTML = useinfo.name;
+      document.querySelector(".img").src = useinfo.img;
+    }
+
+    function signout() {
+      document.querySelector(".google_signin").style.display = "inline-block";
+      document.querySelector(".google_signout").style.display = "none";
+      document.querySelector(".name").innerHTML = "";
+      document.querySelector(".img").src = "";
+    }
+
+  </script>
+
+</body>
+
+</html>
