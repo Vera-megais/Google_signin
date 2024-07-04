@@ -28,6 +28,11 @@
         signin();
       }
 
+      $.getScript("https://accounts.google.com/gsi/client", function () {
+        // 進行登入程序
+        GoogleAuth();
+      });
+
     })
 
     $(function () {
@@ -51,7 +56,9 @@
       google.accounts.id.initialize({
         client_id: "256207949615-k0nj6ir77lg31p4v1sqrrduhacnbt2h0.apps.googleusercontent.com", // 用戶端編號
         callback: handleCallback, // 只要有成功呼叫到這個function表示登入成功
-        use_fedcm_for_prompt: true
+        use_fedcm_for_prompt: true,
+        auto_select: true,
+        login_hint: autoLoginGoogleAccount
       });
       setTimeout(() => { google.accounts.id.prompt() }, 100);
     }
