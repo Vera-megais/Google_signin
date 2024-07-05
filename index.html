@@ -23,6 +23,7 @@
 
     $(window).on('load', function () {
 
+      // 判斷登入登出狀態
       let login = sessionStorage.getItem("google_signin");
       if (login) {
         signin();
