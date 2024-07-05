@@ -23,7 +23,7 @@
 
     $(window).on('load', function () {
 
-      let login = localStorage.getItem("google_signin");
+      let login = sessionStorage.getItem("google_signin");
       if (login) {
         signin();
       }
@@ -40,8 +40,8 @@
       // 登出按鈕
       $(".google_signout").click(function () {
         google.accounts.id.disableAutoSelect();
-        localStorage.removeItem("google_signin");
-        localStorage.removeItem("google_cachedValue");
+        sessionStorage.removeItem("google_signin");
+        sessionStorage.removeItem("google_cachedValue");
         signout();
       })
 
@@ -60,12 +60,12 @@
       if (res) {
         let credential = res.credential;
         let userinfo = parseJwt(credential); // 進行解碼，取得使用者資料(確保安全性，應該在後端進行驗證)
-        localStorage.setItem("google_signin", "true");
-        localStorage.setItem("google_cachedValue", JSON.stringify({ "name": userinfo.name, "img": userinfo.picture }));
+        sessionStorage.setItem("google_signin", "true");
+        sessionStorage.setItem("google_cachedValue", JSON.stringify({ "name": userinfo.name, "img": userinfo.picture }));
         signin();
       } else {
-        localStorage.removeItem("google_signin");
-        localStorage.removeItem("google_cachedValue");
+        sessionStorage.removeItem("google_signin");
+        sessionStorage.removeItem("google_cachedValue");
       }
     }
 
@@ -80,7 +80,7 @@
     };
 
     function signin() {
-      let useinfo = JSON.parse(localStorage.getItem("google_cachedValue"));
+      let useinfo = JSON.parse(sessionStorage.getItem("google_cachedValue"));
       document.querySelector(".google_signin").style.display = "none";
       document.querySelector(".google_signout").style.display = "inline-block";
       document.querySelector(".name").innerHTML = useinfo.name;
